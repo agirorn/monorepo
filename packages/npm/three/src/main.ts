@@ -1,5 +1,5 @@
-export const three = () => {
+export const three = (): String => {
   // // comment out next line to affect the build
-  // return "\n#################\nfrom three ----\n###################";
+  // return "\n#####false\nfrom three ----\n###################";
   return "from three";
-}
+};

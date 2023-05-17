@@ -9,6 +9,9 @@ procs:
   app-2 watch:
     autostart: false
     shell: "yardman 'packages/**/*' 'app-2/**/*' pnpm-workspace.yaml package.json 'clear && bazel run app-1'"
+  package-three watch:
+    autostart: false
+    shell: "yardman 'packages/npm/three/**/*' pnpm-workspace.yaml package.json 'clear && bazel build packages/npm/three'"
   app-1 BUILD:
     autostart: false
     shell: "bazel build app-1 --verbose_failures --sandbox_debug"

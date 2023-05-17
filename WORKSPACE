@@ -65,10 +65,10 @@ nodejs_register_toolchains(
     node_version = DEFAULT_NODE_VERSION,
 )
 
-# TODO: Document what this id doing
+# TODO: Document what this is doing
 load("@aspect_rules_js//npm:npm_import.bzl", "npm_translate_lock")
 
-# TODO: Document what this id doing
+# TODO: Document what this is doing
 npm_translate_lock(
     name = "npm",
     bins = {
@@ -86,5 +86,12 @@ npm_translate_lock(
 # TODO: Document what this id doing
 load("@npm//:repositories.bzl", "npm_repositories")
 
-# TODO: Document what this id doing
+# TODO: Document what this is doing
 npm_repositories()
+
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+git_repository(
+    name = "com_github_airyhq_bazel_tools",
+    branch = "main",
+    remote = "https://github.com/airyhq/bazel-tools.git"
+)
