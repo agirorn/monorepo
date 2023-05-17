@@ -1,0 +1,17 @@
+procs:
+  app-1:
+    shell: "bazel run app-1"
+  app-2:
+    shell: "bazel run app-2"
+  app-1 watch:
+    autostart: false
+    shell: "yardman 'packages/**/*' 'app-1/**/*' pnpm-workspace.yaml package.json 'clear && bazel run app-1'"
+  app-2 watch:
+    autostart: false
+    shell: "yardman 'packages/**/*' 'app-2/**/*' pnpm-workspace.yaml package.json 'clear && bazel run app-1'"
+  app-1 BUILD:
+    autostart: false
+    shell: "bazel build app-1 --verbose_failures --sandbox_debug"
+  app-2 BUILD:
+    autostart: false
+    shell: "bazel build app-2 --verbose_failures --sandbox_debug"

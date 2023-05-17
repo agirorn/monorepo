@@ -1,0 +1,52 @@
+lockfileVersion: '6.0'
+
+importers:
+
+  .:
+    dependencies:
+      '@bazel-poc/one':
+        specifier: workspace:*
+        version: link:packages/npm/one
+      '@bazel-poc/three':
+        specifier: workspace:*
+        version: link:packages/npm/three
+      '@bazel-poc/two':
+        specifier: workspace:*
+        version: link:packages/npm/two
+    devDependencies:
+      '@tsconfig/node16-strictest':
+        specifier: 1.0.4
+        version: 1.0.4
+      '@types/node':
+        specifier: 18.11.9
+        version: 18.11.9
+      typescript:
+        specifier: 4.9.3
+        version: 4.9.3
+
+  app-1: {}
+
+  app-2: {}
+
+  packages/npm/one: {}
+
+  packages/npm/three: {}
+
+  packages/npm/two: {}
+
+packages:
+
+  /@tsconfig/node16-strictest@1.0.4:
+    resolution: {integrity: sha512-kp6/DuAoKzHVv5U+p0uOesYbjrEvrYVNdQMl163a+yXXUv9twabvkCGEn3pmVxKXB45JU5MPGolDDWnONZL5ZQ==}
+    deprecated: TypeScript 5.0 supports combining TSConfigs using array syntax in extends
+    dev: true
+
+  /@types/node@18.11.9:
+    resolution: {integrity: sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==}
+    dev: true
+
+  /typescript@4.9.3:
+    resolution: {integrity: sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true

@@ -1,0 +1,21 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+
+npm_link_all_packages(name = "node_modules")
+
+ts_project(
+    name = "app_js",
+    srcs = ["src/main.ts"],
+    tsconfig = "//:tsconfig",
+    deps = [
+        "//:node_modules/@types/node",
+        "//:node_modules/@bazel-poc/two",
+    ],
+)
+
+js_binary(
+    name = "app-2",
+    data = [":app_js"],
+    entry_point = "src/main.js",
+)
