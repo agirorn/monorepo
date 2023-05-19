@@ -1,5 +1,5 @@
-import { two } from "@bazel-poc/two";
+import { two } from "@monorepo/two";
 
 export const one = () => {
   return two();
-}
+};

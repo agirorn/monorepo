@@ -7,7 +7,7 @@ ts_project(
     tsconfig = "//:tsconfig",
     deps = [
         "//:node_modules/@types/node",
-        "//:node_modules/@bazel-poc/two",
+        "//:node_modules/@monorepo/two",
     ],
 )
 

@@ -94,4 +94,6 @@ Interactive view of the graph
 xdot <(bazel query --notool_deps --noimplicit_deps "deps(//app-1:app-1)"  --output graph)
 ```
 
+[Bazel Query guide](https://bazel.build/query/guide)
+
 [Bazel.build]: https://bazel.build/

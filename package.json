@@ -12,8 +12,8 @@
     "prettier": "^2.8.8"
   },
   "dependencies": {
-    "@bazel-poc/one": "workspace:*",
-    "@bazel-poc/three": "workspace:*",
-    "@bazel-poc/two": "workspace:*"
+    "@monorepo/one": "workspace:*",
+    "@monorepo/three": "workspace:*",
+    "@monorepo/two": "workspace:*"
   }
 }

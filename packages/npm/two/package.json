@@ -1,4 +1,4 @@
 {
-  "name": "@bazel-poc/two",
+  "name": "@monorepo/two",
   "main": "src/main.js"
 }

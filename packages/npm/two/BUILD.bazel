@@ -13,7 +13,7 @@ ts_project(
     # declaration = True,
     # resolve_json_module = True,
     deps = [
-        "//:node_modules/@bazel-poc/three",
+        "//:node_modules/@monorepo/three",
         "//:node_modules/@types/node",
     ],
 )
@@ -26,7 +26,7 @@ npm_package(
         ":two_ts",
     ],
     data = [
-        "//:node_modules/@bazel-poc/three",
+        "//:node_modules/@monorepo/three",
     ],
     # This is a perf improvement; the default will be flipped to False in rules_js 2.0
     include_runfiles = False,

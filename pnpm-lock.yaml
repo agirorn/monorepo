@@ -4,18 +4,15 @@ importers:
 
   .:
     dependencies:
-      '@bazel-poc/one':
+      '@monorepo/one':
         specifier: workspace:*
         version: link:packages/npm/one
-      '@bazel-poc/three':
+      '@monorepo/three':
         specifier: workspace:*
         version: link:packages/npm/three
-      '@bazel-poc/two':
+      '@monorepo/two':
         specifier: workspace:*
         version: link:packages/npm/two
-      prettier:
-        specifier: ^2.8.8
-        version: 2.8.8
     devDependencies:
       '@tsconfig/node16-strictest':
         specifier: 1.0.4
@@ -41,6 +38,9 @@ importers:
       eslint-plugin-prettier:
         specifier: ^4.2.1
         version: 4.2.1(eslint-config-prettier@8.5.0)(eslint@8.40.0)(prettier@2.8.8)
+      prettier:
+        specifier: ^2.8.8
+        version: 2.8.8
       typescript:
         specifier: 4.9.3
         version: 4.9.3
@@ -953,6 +953,7 @@ packages:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
     engines: {node: '>=10.13.0'}
     hasBin: true
+    dev: true
 
   /punycode@2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}

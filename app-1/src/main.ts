@@ -1,3 +1,3 @@
-import { one } from "@bazel-poc/one";
+import { one } from "@monorepo/one";
 
 console.log("Called one got ", one());
