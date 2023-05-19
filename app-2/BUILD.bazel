@@ -1,13 +1,24 @@
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 
 npm_link_all_packages(name = "node_modules")
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = ["//visibility:public"],
+    deps = [
+      "//:node_modules/@monorepo/tsconfig",
+      "//:node_modules/@tsconfig/node16-strictest"
+    ],
+)
 
 ts_project(
     name = "app_js",
     srcs = ["src/main.ts"],
-    tsconfig = "//:tsconfig",
+    tsconfig = ":tsconfig",
     deps = [
         "//:node_modules/@types/node",
         "//:node_modules/@monorepo/two",

@@ -10,6 +10,9 @@ importers:
       '@monorepo/three':
         specifier: workspace:*
         version: link:packages/npm/three
+      '@monorepo/tsconfig':
+        specifier: workspace:*
+        version: link:packages/npm/tsconfig
       '@monorepo/two':
         specifier: workspace:*
         version: link:packages/npm/two
@@ -52,6 +55,8 @@ importers:
   packages/npm/one: {}
 
   packages/npm/three: {}
+
+  packages/npm/tsconfig: {}
 
   packages/npm/two: {}
 

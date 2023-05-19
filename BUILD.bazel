@@ -1,28 +1,8 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 
 # link all dependencies from root package.json
 npm_link_all_packages(name = "node_modules")
 package(default_visibility = ["//visibility:public"])
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = ["//visibility:public"],
-    deps = ["//:node_modules/@tsconfig/node16-strictest"],
-)
-
-# filegroup(
-#     name = "eslintrcjson",
-#     srcs = [".eslintrc.json"],
-#     visibility = ["//visibility:public"],
-# )
-
-# exports_files([".eslintrc.json"])
-# filegroup(
-#     name = "eslintconfig",
-#     srcs = [".eslintrc.json"],
-# )
 
 genrule(
     name = "eslintconfig",

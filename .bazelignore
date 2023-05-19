@@ -4,3 +4,4 @@ app-2/node_modules
 packages/npm/one/node_modules
 packages/npm/two/node_modules
 packages/npm/three/node_modules
+packages/npm/tsconfig/node_modules
