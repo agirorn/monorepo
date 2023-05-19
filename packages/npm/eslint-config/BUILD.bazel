@@ -1,0 +1,47 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@npm//:eslint/package_json.bzl", eslint_bin = "bin")
+
+# make this library available via node_modules
+npm_package(
+    name = "eslint-config",
+    srcs = glob(
+        ["src/*.js"],
+    ) + [
+        "package.json",
+        "tsconfig.json",
+        "//:node_modules/@monorepo/prettier-config",
+        "//:node_modules/@typescript-eslint/eslint-plugin",
+        "//:node_modules/@typescript-eslint/parser",
+        "//:node_modules/eslint",
+        "//:node_modules/eslint-config-prettier",
+        "//:node_modules/eslint-plugin-node",
+        "//:node_modules/eslint-plugin-prettier",
+        "//:node_modules/@types/node",
+        "//:node_modules/typescript",
+    ],
+    # This is a perf improvement; the default will be flipped to False in rules_js 2.0
+    include_runfiles = False,
+    visibility = ["//visibility:public"],
+)
+
+eslint_bin.eslint_test(
+    name = "eslint_test",
+    data = glob(
+        ["src/*.js"],
+    ) + [
+      ".eslintrc.json",
+      ".prettierrc.json",
+      "package.json",
+      "//:node_modules/@monorepo/prettier-config",
+      "//:node_modules/eslint-plugin-node",
+      "//:node_modules/eslint-config-prettier",
+      "//:node_modules/eslint-plugin-prettier",
+      "//:node_modules/@typescript-eslint/eslint-plugin",
+      "//:node_modules/@typescript-eslint/parser",
+      "//:node_modules/prettier",
+    ],
+    args = ["."]
+)
+
+

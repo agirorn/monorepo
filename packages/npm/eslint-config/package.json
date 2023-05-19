@@ -1,0 +1,4 @@
+{
+  "name": "@monorepo/eslint-config",
+  "main": "src/index.js"
+}

@@ -1,0 +1,4 @@
+{
+  "name": "@monorepo/prettier-config",
+  "main": ".prettierrc.json"
+}

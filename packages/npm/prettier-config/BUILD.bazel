@@ -1,14 +1,14 @@
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@npm//:eslint/package_json.bzl", eslint_bin = "bin")
+load("@npm//:defs.bzl", "npm_link_all_packages")
 
-# make this library available via node_modules
+npm_link_all_packages(name = "node_modules")
+
 npm_package(
-    name = "tsconfig",
+    name = "prettier-config",
     srcs = [
         "package.json",
-        "tsconfig.json",
-        "//:node_modules/@tsconfig/node16-strictest",
+        ".prettierrc.json",
+        "//:node_modules/prettier",
     ],
     # This is a perf improvement; the default will be flipped to False in rules_js 2.0
     include_runfiles = False,

@@ -1,4 +1,7 @@
 {
   "name": "@monorepo/three",
-  "main": "src/main.js"
+  "main": "src/main.js",
+  "devDependecies": {
+    "@monorepo/eslint-config": "*"
+  }
 }

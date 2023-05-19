@@ -2,6 +2,11 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:eslint/package_json.bzl", eslint_bin = "bin")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+
+SRC_PATTERNS = [
+    "src/*.ts",
+]
 
 ts_config(
     name = "tsconfig",
@@ -15,7 +20,7 @@ ts_config(
 
 ts_project(
     name = "three_ts",
-    srcs = ["src/main.ts"],
+    srcs = glob(SRC_PATTERNS),
     tsconfig = ":tsconfig",
     deps = [
         "//:node_modules/@types/node",
@@ -34,31 +39,26 @@ npm_package(
     visibility = ["//visibility:public"],
 )
 
-
-SRC_PATTERNS = [
-    # "*.tsx",
-    "**/*.ts",
-]
-
 eslint_bin.eslint_test(
     name = "eslint_test",
+    args = ["{}/{}".format(
+        package_name(),
+        p,
+    ) for p in SRC_PATTERNS],
     data = [
-      "src/main.ts",
-      # ".prettierrc.json",
-      ":tsconfig",
-      "//:node_modules/eslint-plugin-node",
-      "//:node_modules/eslint-config-prettier",
-      "//:node_modules/eslint-plugin-prettier",
-      "//:node_modules/@typescript-eslint/eslint-plugin",
-      "//:node_modules/@typescript-eslint/parser",
-      "//:node_modules/prettier",
-      "//:eslintconfig",
-      "//:prettierconfig"
-      # "//:.eslintrc.json"
-    ],
-    # deps = [
-    # ],
-    args = ["."]
+        "package.json",
+        ".eslintrc.js",
+        ".prettierrc.json",
+        "tsconfig.json",
+        "//:node_modules/@monorepo/tsconfig",
+        "//:node_modules/@tsconfig/node16-strictest",
+        "//:node_modules/@monorepo/eslint-config",
+        "//:node_modules/@monorepo/prettier-config",
+        "//:node_modules/eslint-plugin-node",
+        "//:node_modules/eslint-config-prettier",
+        "//:node_modules/eslint-plugin-prettier",
+        "//:node_modules/@typescript-eslint/eslint-plugin",
+        "//:node_modules/@typescript-eslint/parser",
+        "//:node_modules/prettier",
+    ] + glob(SRC_PATTERNS),
 )
-
-

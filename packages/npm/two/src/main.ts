@@ -1,5 +1,5 @@
 import { three } from "@monorepo/three";
 
-export const two = () => {
+export const two = (): String => {
   return three();
 };
