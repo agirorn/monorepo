@@ -1,0 +1,6 @@
+version: "3.9"
+services:
+  app-1:
+    image: bazel/app-1:image
+    # profiles:
+    #   - test

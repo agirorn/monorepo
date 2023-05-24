@@ -96,4 +96,30 @@ xdot <(bazel query --notool_deps --noimplicit_deps "deps(//app-1:app-1)"  --outp
 
 [Bazel Query guide](https://bazel.build/query/guide)
 
+## Inspecting docker containers
+
+The Docker containers build in the repo do not have sh or bash so you can´t
+shell into them to inspect them so you have to use other methods to inspect them
+
+### List files and folders in the image
+
+```bash
+docker create --name="tmp_$$" bazel/app-1:image
+# List the fils int container
+docker export tmp_$$ | tar t
+docker rm tmp_$$
+```
+
+### Export the image to a tar file
+
+The image to a tar file that can be opend up and inspected.
+
+```bash
+docker create --name="tmp_$$" bazel/app-1:image
+# Exports the image to a tar file
+docker export tmp_$$ > tar.tar
+docker rm tmp_$$
+```
+
+
 [Bazel.build]: https://bazel.build/

@@ -3,6 +3,9 @@ load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@npm//:eslint/package_json.bzl", eslint_bin = "bin")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_image_layer")
+load("@io_bazel_rules_docker//container:container.bzl", "container_image")
+load("@io_bazel_rules_docker//container:layer.bzl", "container_layer")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -59,3 +62,70 @@ eslint_bin.eslint_test(
         "//:node_modules/prettier",
     ] + glob(SRC_PATTERNS),
 )
+
+# Image
+js_image_layer(
+    name = "layers",
+    binary = ":app-1",
+    root = "/app",
+    visibility = ["//visibility:__pkg__"],
+)
+
+filegroup(
+    name = "app_tar",
+    srcs = [":layers"],
+    output_group = "app",
+)
+
+container_layer(
+    name = "app_layer",
+    tars = [":app_tar"],
+)
+
+filegroup(
+    name = "node_modules_tar",
+    srcs = [":layers"],
+    output_group = "node_modules",
+)
+
+container_layer(
+    name = "node_modules_layer",
+    tars = [":node_modules_tar"],
+)
+
+container_image(
+    name = "image",
+    architecture = "amd64",  # or arm64
+
+    # Since js_binary depends on bash we have to bring in a base image that has bash
+    base = "@debian_amd64//image",  # or "@debian_arm64//image", if you are on an arm machine
+    # This is going to be /{root of js_image_layer}/{package_name()}/{name of js_binary}
+    cmd = ["/app/app-1/app-1"],
+    entrypoint = ["bash"],
+    layers = [
+        ":app_layer",
+        ":node_modules_layer",
+    ],
+)
+
+# container_test(
+#     name = "image_test",
+#     configs = [":smoketest.yaml"],
+#     image = ":image",
+#     # ./image_test.image: line 214: /usr/bin/docker: No such file or directory
+#     tags = ["no-remote-exec"],
+# )
+
+
+# ### Build & Run NodeJS web app docker image
+# ```
+# ➜ bazel run app-1:image --@io_bazel_rules_docker//transitions:enable=yes -- --norun
+# ...
+# INFO: Build completed successfully, 1 total action
+# Loaded image ID: sha256:XXX
+# Tagging YYY as bazel/app-1/app-1:image
+#
+# ➜ docker run -p 8080:8080 bazel/app-1:image bash
+# ```
+#
+# docker run -p 8080:8080 bazel/projects/node_web:image bash

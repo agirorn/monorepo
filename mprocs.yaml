@@ -1,15 +1,36 @@
+proc_list_width: 34
 procs:
+  docker compose up:
+    autostart: false
+    shell: "docker compose up"
+  docker compose down:
+    autostart: false
+    shell: "docker compose down"
   app-1:
+    autostart: false
     shell: "bazel run app-1"
   app-2:
+    autostart: false
     shell: "bazel run app-2"
-  app-1 watch:
+  app-1 WATCH:
     autostart: false
     shell: "yardman 'packages/**/*' 'app-1/**/*' pnpm-workspace.yaml package.json 'clear && bazel run app-1'"
-  app-2 watch:
+  app-2 WATCH:
     autostart: false
     shell: "yardman 'packages/**/*' 'app-2/**/*' pnpm-workspace.yaml package.json 'clear && bazel run app-1'"
-  package-three watch:
+  app-1 docker start:
+    autostart: false
+    shell: "docker run bazel/app-1:image"
+  app-1 docker start WATCH:
+    autostart: false
+    shell: "yardman 'packages/**/*' 'app-1/**/*' pnpm-workspace.yaml package.json 'clear && bazel run //app-1:image && clear && docker run bazel/app-1:image'"
+  app-1 docker build:
+    autostart: false
+    shell: "bazel run //app-1:image"
+  app-1 docker build WATCH:
+    autostart: false
+    shell: "yardman 'packages/**/*' 'app-1/**/*' pnpm-workspace.yaml package.json 'clear && bazel run //app-1:image'"
+  package-three WATCH:
     autostart: false
     shell: "yardman 'packages/npm/three/**/*' pnpm-workspace.yaml package.json 'clear && bazel build packages/npm/three'"
   app-1 BUILD:
