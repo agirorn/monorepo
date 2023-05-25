@@ -1,0 +1,28 @@
+load("@io_bazel_rules_docker//container:container.bzl", "container_image")
+load("@io_bazel_rules_docker//container:layer.bzl", "container_layer")
+
+container_layer(
+    name = "sql_layer",
+    files = glob(["**/*.sql"]),
+    directory = "/flyway",
+    # data_path  is needed to preserve the directory structure.
+    data_path = ".",
+)
+
+# To build this target and load it into the local docker run
+# $> bazel run //databases/one -- --norun
+#
+# To Build and runs the container run 
+# $> bazel run //databases/one -- --norun
+#
+# Read more on [Using with Docker locally](https://github.com/bazelbuild/rules_docker#using-with-docker-locally)
+
+container_image(
+    name = "one",
+    # References container_pull from WORKSPACE (above)
+    base = "@flyway_amd64//image",
+    layers = [
+        ":sql_layer",
+    ],
+    cmd = ["--help"]
+)

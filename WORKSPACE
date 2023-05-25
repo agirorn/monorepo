@@ -141,6 +141,7 @@ rules_docker_deps()
 
 load("@io_bazel_rules_docker//container:container.bzl", "container_pull")
 
+# ARM64
 container_pull(
     name = "debian_arm64",
     architecture = "arm64",
@@ -149,6 +150,7 @@ container_pull(
     repository = "debian",
 )
 
+# AMD64 x64
 container_pull(
     name = "debian_amd64",
     architecture = "amd64",
@@ -156,3 +158,32 @@ container_pull(
     registry = "docker.io",
     repository = "debian",
 )
+
+# # ARM64
+# container_pull(
+#   name = "flyway_arm64",
+#   registry = "docker.io",
+#   repository = "flyway/flyway",
+#   # 'tag' is also supported, but digest is encouraged for reproducibility.
+#   # digest 1ae9c45f24dc is the 8-
+#   digest = "sha256:1ae9c45f24dc",
+# )
+
+# AMD64 x64
+container_pull(
+  name = "flyway_amd64",
+  registry = "docker.io",
+  repository = "flyway/flyway",
+  # 'tag' is also supported, but digest is encouraged for reproducibility.
+  # digest = "sha256:40a3a8728934" is the flyway/flyway:8-alpine
+  # https://hub.docker.com/layers/flyway/flyway/8-alpine/images/sha256-40a3a8728934362b14e81e8be9e472f3e49008a05ad0fef6ed8fc3fa48be6c87?context=explore
+  digest = "sha256:40a3a8728934362b14e81e8be9e472f3e49008a05ad0fef6ed8fc3fa48be6c87",
+)
+
+# container_pull(
+#   name = "java_base",
+#   registry = "gcr.io",
+#   repository = "distroless/java",
+#   # 'tag' is also supported, but digest is encouraged for reproducibility.
+#   digest = "sha256:deadbeef",
+# )

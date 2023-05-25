@@ -1,11 +1,32 @@
 proc_list_width: 34
 procs:
+  docker reset:
+    autostart: false
+    shell: "time docker system prune --volumes --force"
+  docker list images:
+    autostart: false
+    shell: "time docker images"
   docker compose up:
     autostart: false
     shell: "docker compose up"
   docker compose down:
     autostart: false
     shell: "docker compose down"
+  docker compose DB up:
+    autostart: false
+    shell: "docker compose -f docker-compose-db.yaml up"
+  docker compose DB down:
+    autostart: false
+    shell: "docker compose -f docker-compose-db.yaml down"
+  docker compose DB-only up:
+    autostart: false
+    shell: "docker compose -f docker-compose-db-only.yaml up"
+  docker compose DB-only down:
+    autostart: false
+    shell: "docker compose -f docker-compose-db-only.yaml down"
+  DB build one:
+    autostart: false
+    shell: "bazel run //databases/one -- --norun"
   app-1:
     autostart: false
     shell: "bazel run app-1"
