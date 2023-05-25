@@ -1,62 +1,77 @@
 proc_list_width: 34
 procs:
-  docker reset:
+  "- DOCKER -------------------------":
+    autostart: false
+    shell: "echo ----------------"
+  reset:
     autostart: false
     shell: "time docker system prune --volumes --force"
-  docker list images:
+  list images:
     autostart: false
     shell: "time docker images"
-  docker compose up:
+  compose up:
     autostart: false
     shell: "docker compose up"
-  docker compose down:
+  compose down:
     autostart: false
     shell: "docker compose down"
-  docker compose DB up:
+  compose DB up:
     autostart: false
     shell: "docker compose -f docker-compose-db.yaml up"
-  docker compose DB down:
+  compose DB down:
     autostart: false
     shell: "docker compose -f docker-compose-db.yaml down"
-  docker compose DB-only up:
+  compose DB ONLY up:
     autostart: false
     shell: "docker compose -f docker-compose-db-only.yaml up"
-  docker compose DB-only down:
+  compose DB ONLY down:
     autostart: false
     shell: "docker compose -f docker-compose-db-only.yaml down"
-  DB build one:
+  DB BUILD one:
     autostart: false
     shell: "bazel run //databases/one -- --norun"
-  app-1:
+
+  "- app-1 -----------------------------":
+    autostart: false
+    shell: "echo ----------------"
+  app-1 RUN:
     autostart: false
     shell: "bazel run app-1"
-  app-2:
-    autostart: false
-    shell: "bazel run app-2"
-  app-1 WATCH:
-    autostart: false
-    shell: "yardman 'packages/**/*' 'app-1/**/*' pnpm-workspace.yaml package.json 'clear && bazel run app-1'"
-  app-2 WATCH:
-    autostart: false
-    shell: "yardman 'packages/**/*' 'app-2/**/*' pnpm-workspace.yaml package.json 'clear && bazel run app-1'"
-  app-1 docker start:
-    autostart: false
-    shell: "docker run bazel/app-1:image"
-  app-1 docker start WATCH:
-    autostart: false
-    shell: "yardman 'packages/**/*' 'app-1/**/*' pnpm-workspace.yaml package.json 'clear && bazel run //app-1:image && clear && docker run bazel/app-1:image'"
-  app-1 docker build:
-    autostart: false
-    shell: "bazel run //app-1:image"
-  app-1 docker build WATCH:
-    autostart: false
-    shell: "yardman 'packages/**/*' 'app-1/**/*' pnpm-workspace.yaml package.json 'clear && bazel run //app-1:image'"
-  package-three WATCH:
-    autostart: false
-    shell: "yardman 'packages/npm/three/**/*' pnpm-workspace.yaml package.json 'clear && bazel build packages/npm/three'"
   app-1 BUILD:
     autostart: false
     shell: "bazel build app-1 --verbose_failures --sandbox_debug"
+  app-1 WATCH:
+    autostart: false
+    shell: "yardman 'packages/**/*' 'app-1/**/*' pnpm-workspace.yaml package.json 'clear && bazel run app-1'"
+  app-1 docker START:
+    autostart: false
+    shell: "docker run bazel/app-1:image"
+  app-1 docker START WATCH:
+    autostart: false
+    shell: "yardman 'packages/**/*' 'app-1/**/*' pnpm-workspace.yaml package.json 'clear && bazel run //app-1:image && clear && docker run bazel/app-1:image'"
+
+  "- app-2 -----------------------------":
+    autostart: false
+    shell: "echo ----------------"
+  app-2 RUN:
+    autostart: false
+    shell: "bazel run app-2"
   app-2 BUILD:
     autostart: false
     shell: "bazel build app-2 --verbose_failures --sandbox_debug"
+  app-2 WATCH:
+    autostart: false
+    shell: "yardman 'packages/**/*' 'app-2/**/*' pnpm-workspace.yaml package.json 'clear && bazel run app-2'"
+  app-2 docker START:
+    autostart: false
+    shell: "docker run bazel/app-2:image"
+  app-2 docker START WATCH:
+    autostart: false
+    shell: "yardman 'packages/**/*' 'app-2/**/*' pnpm-workspace.yaml package.json 'clear && bazel run //app-2:image && clear && docker run bazel/app-2:image'"
+
+  "- other -----------------------------":
+    autostart: false
+    shell: "echo ----------------"
+  package-three WATCH:
+    autostart: false
+    shell: "yardman 'packages/npm/three/**/*' pnpm-workspace.yaml package.json 'clear && bazel build packages/npm/three'"

@@ -26,9 +26,5 @@ services:
       - migrate
     environment:
       FLYWAY_PLACEHOLDERS_CUSTOM_COLUMN_NAME: this_column_name_came_from_a_flyway_placeholder
-    # volumes:
-    #   - ./apis/actor-api/flyway/sql:/flyway/sql
-    #   - ./apis/actor-api/flyway/jars:/flyway/jars
-    #   - ./apis/actor-api/flyway/custom-sql/${CUSTOM_SQL:-dev}-sql:/flyway/custom-sql/${CUSTOM_SQL:-dev}-sql
     depends_on:
       - db

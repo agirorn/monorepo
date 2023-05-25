@@ -1,5 +1,4 @@
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@npm//:eslint/package_json.bzl", eslint_bin = "bin")
@@ -115,17 +114,3 @@ container_image(
 #     # ./image_test.image: line 214: /usr/bin/docker: No such file or directory
 #     tags = ["no-remote-exec"],
 # )
-
-
-# ### Build & Run NodeJS web app docker image
-# ```
-# ➜ bazel run app-1:image --@io_bazel_rules_docker//transitions:enable=yes -- --norun
-# ...
-# INFO: Build completed successfully, 1 total action
-# Loaded image ID: sha256:XXX
-# Tagging YYY as bazel/app-1/app-1:image
-#
-# ➜ docker run -p 8080:8080 bazel/app-1:image bash
-# ```
-#
-# docker run -p 8080:8080 bazel/projects/node_web:image bash
