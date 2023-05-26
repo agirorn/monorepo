@@ -9,8 +9,12 @@ dev:
 
 dev-exec:
 	clear
+	# Run all the test, so first bazel will build everything needed
+	bazel test //...
+	# Linting tsconfig
+	# bazel test //packages/npm/tsconfig:eslint_test
+	# Something else
 	# bazel test //packages/npm/eslint-config:eslint_test
-	bazel test //packages/npm/one:eslint_test
 	# bazel build //packages/npm/eslint-config
 	# bazel build //packages/npm/prettier-config
 	# bazel test packages/npm/three:eslint_test
