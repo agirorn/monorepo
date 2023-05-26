@@ -2,27 +2,54 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@io_bazel_rules_docker//container:layer.bzl", "container_layer")
 
 container_layer(
-    name = "sql_layer",
+    name = "sql_migrations_layer",
     files = glob(["**/*.sql"]),
     directory = "/flyway",
-    # data_path  is needed to preserve the directory structure.
+    # data_path is needed to preserve the directory structure (sql, custom-sql)
     data_path = ".",
+)
+
+# On Mac OS the the jar file should be be found in
+# bazel-out//darwin-fastbuild/bin/databases/one/libjava-migrations.jar
+#
+java_library(
+    name = "java_migrations",
+    srcs = glob(["src/main/java/**/*.java"]),
+    deps = ["@flyway_core//jar"],
+)
+
+# To investigate gate the layer you can copy the tar file and then untar it and
+# the untar the jar file.
+#
+# **The files are only availabe if the target has been build**
+# $> bazel build //databases/one:java_migrations_layer
+#
+# Example:
+# $> cp bazel-out/darwin-fastbuild/bin/databases/one/java_migrations_layer-layer.tar .
+# $> mkdir -p java_migrations_layer-layer && tar -C java_migrations_layer-layer -xvf java_migrations_layer-layer.tar
+# $> cd java_migrations_layer-layer/flyway/jars && jar xf libjava_migrations.jar && cd -
+#
+container_layer(
+    name = "java_migrations_layer",
+    files = ["java_migrations"],
+    directory = "/flyway/jars",
 )
 
 # To build this target and load it into the local docker run
 # $> bazel run //databases/one -- --norun
 #
-# To Build and runs the container run 
-# $> bazel run //databases/one -- --norun
+# To Build and runs the container run
+# $> bazel run //databases/one
 #
 # Read more on [Using with Docker locally](https://github.com/bazelbuild/rules_docker#using-with-docker-locally)
-
+#
 container_image(
     name = "one",
     # References container_pull from WORKSPACE (above)
     base = "@flyway_amd64//image",
     layers = [
-        ":sql_layer",
+        ":sql_migrations_layer",
+        ":java_migrations_layer",
     ],
     cmd = ["--help"]
 )

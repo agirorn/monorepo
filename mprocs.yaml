@@ -3,12 +3,18 @@ procs:
   "- DOCKER -------------------------":
     autostart: false
     shell: "echo ----------------"
+  reset HARD:
+    autostart: false
+    shell: "time docker system prune --volumes --force --all"
   reset:
     autostart: false
     shell: "time docker system prune --volumes --force"
   list images:
     autostart: false
     shell: "time docker images"
+  list containers:
+    autostart: false
+    shell: "time docker ps"
   compose up:
     autostart: false
     shell: "docker compose up"

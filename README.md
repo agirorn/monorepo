@@ -121,5 +121,8 @@ docker export tmp_$$ > tar.tar
 docker rm tmp_$$
 ```
 
+# Bazel Docs
+
+- [rules_docker](https://github.com/bazelbuild/rules_docker/blob/master/docs/container.md)
 
 [Bazel.build]: https://bazel.build/

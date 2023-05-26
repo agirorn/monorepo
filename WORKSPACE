@@ -180,10 +180,25 @@ container_pull(
   digest = "sha256:40a3a8728934362b14e81e8be9e472f3e49008a05ad0fef6ed8fc3fa48be6c87",
 )
 
-# container_pull(
-#   name = "java_base",
-#   registry = "gcr.io",
-#   repository = "distroless/java",
-#   # 'tag' is also supported, but digest is encouraged for reproducibility.
-#   digest = "sha256:deadbeef",
-# )
+###
+# Adding Java
+###
+RULES_JVM_EXTERNAL_TAG = "4.3"
+RULES_JVM_EXTERNAL_SHA = "6274687f6fc5783b589f56a2f1ed60de3ce1f99bc4e8f9edef3de43bdf7c6e74"
+
+http_archive(
+    name = "rules_jvm_external",
+    sha256 = RULES_JVM_EXTERNAL_SHA,
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
+)
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
+
+http_jar(
+    name = "flyway_core",
+    url = "https://repo1.maven.org/maven2/org/flywaydb/flyway-core/9.8.1/flyway-core-9.8.1.jar",
+    sha256 = "8ad54be09fff019168c9dc8499ca83015f2ba428ebf8704fff859b71dc336306",
+    # md5 = "22fd06334bc6b5ee2da0abc15854251b",
+)
+
