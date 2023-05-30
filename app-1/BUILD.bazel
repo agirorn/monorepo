@@ -24,7 +24,7 @@ ts_config(
 
 ts_project(
     name = "app_js",
-    srcs = ["src/main.ts"],
+    srcs = glob(SRC_PATTERNS),
     tsconfig = ":tsconfig",
     deps = [
         "//:node_modules/@types/node",
@@ -40,6 +40,8 @@ js_binary(
 
 eslint_bin.eslint_test(
     name = "eslint_test",
+    size = "small",
+    timeout="short",
     args = ["{}/{}".format(
         package_name(),
         p,

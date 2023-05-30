@@ -6,6 +6,9 @@ procs:
   tests:
     autostart: false
     shell: "make dev"
+  integration tests:
+    autostart: false
+    shell: "make integration-dev"
   "- DOCKER -------------------------":
     autostart: false
     shell: "time echo -"

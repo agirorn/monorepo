@@ -23,3 +23,15 @@ dev-exec:
 	# bazel run app-2
 	# bazel run app-1
 
+integration-dev:
+	yardman \
+		Makefile \
+		pnpm-workspace.yaml \
+		package.json \
+		'packages/**/*' \
+		'app-*/**/*' \
+		'make integration-dev-exec'
+
+integration-dev-exec:
+	clear
+	bazel test '//...' --test_size_filters=large

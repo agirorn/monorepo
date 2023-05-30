@@ -21,7 +21,7 @@ ts_config(
 
 ts_project(
     name = "src_ts",
-    srcs = ["src/main.ts"],
+    srcs = glob(SRC_PATTERNS),
     tsconfig = ":tsconfig",
     declaration = True,
     deps = [
@@ -43,10 +43,10 @@ npm_package(
 )
 
 ts_project(
-    name = "src_test_ts",
-    srcs =  [
-        "tests/unit/one.test.ts",
-    ],
+    name = "unit_test_ts",
+    srcs =  glob([
+        "tests/unit/**/*.test.ts",
+    ]),
     declaration = True,
     tsconfig = ":tsconfig",
     deps = [
@@ -63,18 +63,47 @@ js_library(
 )
 
 jest_test(
-    name = "src_test",
+    name = "unit_test",
+    size = "small",
+    timeout="short",
     config = ":jest_config",
     data = [
-        ":src_test_ts",
+        ":unit_test_ts",
         "//:node_modules/ts-jest",
     ],
     node_modules = "//:node_modules",
 )
 
+ts_project(
+    name = "integration_test_ts",
+    srcs =  glob([
+        "tests/integration/**/*.test.ts",
+    ]),
+    declaration = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":src_ts",
+        "//:node_modules/@types/jest",
+        "//:node_modules/@types/node",
+    ],
+)
+
+jest_test(
+    name = "integration_test",
+    size = "large",
+    timeout="short",
+    config = ":jest_config",
+    data = [
+        ":integration_test_ts",
+        "//:node_modules/ts-jest",
+    ],
+    node_modules = "//:node_modules",
+)
 
 eslint_bin.eslint_test(
     name = "eslint_test",
+    size = "small",
+    timeout="short",
     args = ["{}/{}".format(
         package_name(),
         p,

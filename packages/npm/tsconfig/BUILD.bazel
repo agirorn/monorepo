@@ -17,6 +17,8 @@ npm_package(
 
 eslint_bin.eslint_test(
     name = "eslint_test",
+    size = "small",
+    timeout="short",
     args = ["{}/{}".format(
         package_name(),
         p,

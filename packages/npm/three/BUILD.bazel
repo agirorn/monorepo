@@ -44,10 +44,10 @@ npm_package(
 )
 
 ts_project(
-    name = "src_test_ts",
-    srcs =  [
-        "tests/unit/three.test.ts",
-    ],
+    name = "unit_test_ts",
+    srcs =  glob([
+        "tests/unit/**/*.test.ts",
+    ]),
     declaration = True,
     tsconfig = ":tsconfig",
     deps = [
@@ -64,10 +64,11 @@ js_library(
 )
 
 jest_test(
-    name = "src_test",
+    name = "unit_test",
+    size = "small",
     config = ":jest_config",
     data = [
-        ":src_test_ts",
+        ":unit_test_ts",
         "//:node_modules/ts-jest",
     ],
     node_modules = "//:node_modules",
@@ -75,6 +76,8 @@ jest_test(
 
 eslint_bin.eslint_test(
     name = "eslint_test",
+    size = "small",
+    timeout="short",
     args = ["{}/{}".format(
         package_name(),
         p,

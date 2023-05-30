@@ -121,8 +121,20 @@ docker export tmp_$$ > tar.tar
 docker rm tmp_$$
 ```
 
+# Filtering tests
+
+## Tests can be filtered by size
+
+The sizes are: [small, medium, large, enormous][test.size]
+
+```bash
+bazel test '//...' --test_size_filters=small
+bazel test '//...' --test_size_filters=medium
+```
+
 # Bazel Docs
 
 - [rules_docker](https://github.com/bazelbuild/rules_docker/blob/master/docs/container.md)
 
 [Bazel.build]: https://bazel.build/
+[test.size]: https://bazel.build/reference/be/common-definitions#test.size
