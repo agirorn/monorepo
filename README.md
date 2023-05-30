@@ -132,9 +132,45 @@ bazel test '//...' --test_size_filters=small
 bazel test '//...' --test_size_filters=medium
 ```
 
+# Integration tests
+
+## Using [test containers][Testcontainers]
+
+[Testcontainers] is a library that supports tests for multiple language (Java,
+Node.js, Python and more) this library is a wrapper around working with Docker
+containers in tests.
+
+See the [Node.js quick start guide][Testcontainers.Quickstart] for more information.
+
+All  bazel integration test could use this mechanism to run there integration
+tests and then Bazel can run the integration tests like any other unit test.
+
+But all build agents would need to have docker and the docker images would
+need to be build need to be build and run before the tests start.
+
+## Roll your own
+
+One way to run integration tests using infrastucture like PostgreSQL is to to
+roll your own like the do at [Dataform][dataform] acording to this post
+"How to run services for integration tests with Bazel (ActiveMQ,
+PostgreSQL, MySQL)" on [reddit][reddit.integration_tests].
+
+[Dataform][dataform] start a new PostgreSQL server inside a docker container in
+the beginning of the first test using this [fixture][dataform.fixture]. The
+docker image they start is built in the [BUILD][dataform.build] file.
+
+Then when the tests are finished they shut down the server.
+
 # Bazel Docs
 
 - [rules_docker](https://github.com/bazelbuild/rules_docker/blob/master/docs/container.md)
 
 [Bazel.build]: https://bazel.build/
 [test.size]: https://bazel.build/reference/be/common-definitions#test.size
+[reddit.integration_tests]: https://www.reddit.com/r/bazel/comments/kcmbwb/how_to_run_services_for_integration_tests_with/
+[dataform.build]: https://github.com/dataform-co/dataform/blob/main/tools/postgres/BUILD
+[dataform.fixture]: https://github.com/dataform-co/dataform/blob/main/tools/postgres/postgres_fixture.ts
+[dataform]: https://github.com/dataform-co/dataform#readme
+[Testcontainers]: https://www.testcontainers.org/
+[Testcontainers.Quickstart]: https://node.testcontainers.org/quickstart/
+
