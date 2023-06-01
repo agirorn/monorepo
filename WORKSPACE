@@ -191,6 +191,16 @@ container_pull(
   digest = "sha256:40a3a8728934362b14e81e8be9e472f3e49008a05ad0fef6ed8fc3fa48be6c87",
 )
 
+container_pull(
+    name = "postgres",
+    # This digest is for tag "12.4".
+    # tag = "11.11",
+    digest = "sha256:aac26fd683fd350c1de14bdc0c711d209bff3482a35043198d949d11240c6cb8",
+    registry = "docker.io",
+    repository = "postgres",
+    # repository = "library/postgres",
+)
+
 ###
 # Adding Java
 ###

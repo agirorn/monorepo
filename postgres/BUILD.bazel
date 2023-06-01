@@ -1,0 +1,10 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@io_bazel_rules_docker//container:image.bzl", "container_image")
+
+# To make this docker images available run
+# bazel run //postgres:postgres_image -- --norum
+container_image(
+    name = "postgres_image",
+    base = "@postgres//image",
+)
