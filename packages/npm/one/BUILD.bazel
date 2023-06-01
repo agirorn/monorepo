@@ -19,6 +19,26 @@ ts_config(
     ],
 )
 
+ts_config(
+    name = "tsconfig_test",
+    src = "tsconfig.test.json",
+    visibility = ["//visibility:public"],
+    deps = [
+      "//:node_modules/@monorepo/tsconfig",
+      "//:node_modules/@tsconfig/node16-strictest"
+    ],
+)
+
+ts_config(
+    name = "tsconfig_integration_test",
+    src = "tsconfig.integration-test.json",
+    visibility = ["//visibility:public"],
+    deps = [
+      "//:node_modules/@monorepo/tsconfig",
+      "//:node_modules/@tsconfig/node16-strictest"
+    ],
+)
+
 ts_project(
     name = "src_ts",
     srcs = glob(SRC_PATTERNS),
@@ -48,7 +68,7 @@ ts_project(
         "tests/unit/**/*.test.ts",
     ]),
     declaration = True,
-    tsconfig = ":tsconfig",
+    tsconfig = ":tsconfig_test",
     deps = [
         ":src_ts",
         "//:node_modules/@types/jest",
@@ -80,11 +100,14 @@ ts_project(
         "tests/integration/**/*.test.ts",
     ]),
     declaration = True,
-    tsconfig = ":tsconfig",
+    tsconfig = ":tsconfig_integration_test",
     deps = [
         ":src_ts",
         "//:node_modules/@types/jest",
         "//:node_modules/@types/node",
+        "//:node_modules/@types/pg",
+        "//:node_modules/pg",
+        "//:node_modules/execa",
     ],
 )
 
