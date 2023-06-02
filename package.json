@@ -28,6 +28,7 @@
     "@monorepo/three": "workspace:*",
     "@monorepo/tsconfig": "workspace:*",
     "@monorepo/two": "workspace:*",
+    "@monorepo/postgre-sql-runner": "workspace:*",
     "get-port": "5.1.1"
   }
 }

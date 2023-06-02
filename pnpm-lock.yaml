@@ -10,6 +10,9 @@ importers:
       '@monorepo/one':
         specifier: workspace:*
         version: link:packages/npm/one
+      '@monorepo/postgre-sql-runner':
+        specifier: workspace:*
+        version: link:packages/npm/postgre-sql-runner
       '@monorepo/prettier-config':
         specifier: workspace:*
         version: link:packages/npm/prettier-config
@@ -94,6 +97,8 @@ importers:
   packages/npm/eslint-config: {}
 
   packages/npm/one: {}
+
+  packages/npm/postgre-sql-runner: {}
 
   packages/npm/prettier-config: {}
 

@@ -7,3 +7,4 @@ packages/npm/three/node_modules
 packages/npm/tsconfig/node_modules
 packages/npm/prettier-config/node_modules
 packages/npm/eslint-config/node_modules
+packages/npm/postgre-sql-runner/node_modules

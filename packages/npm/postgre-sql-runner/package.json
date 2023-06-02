@@ -1,0 +1,4 @@
+{
+  "name": "@monorepo/postgre-sql-runner",
+  "main": "src/index.js"
+}

@@ -1,6 +1,6 @@
 import { OneDAO } from "../../../src/dao/OneDAO";
 import { Pool } from "pg";
-import { PostgreSQLRunner } from "./PostgreSQLRunner";
+import { PostgreSQLRunner } from "@monorepo/postgre-sql-runner";
 
 let postgres: PostgreSQLRunner;
 let pool: Pool;

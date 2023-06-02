@@ -1,21 +1,29 @@
 dev:
 	yardman \
 		Makefile \
-		pnpm-workspace.yaml \
 		package.json \
+		'pnpm-*' \
 		'packages/**/*' \
 		'app-*/**/*' \
 		'make dev-exec'
 
 dev-exec:
+	tmux clear-history
 	clear
 	@# Build all packages
-	time bazel build //... --strategy=TsProject=darwin-sandbox
-	clear
+	@time bazel build //... --strategy=TsProject=darwin-sandbox
+	@time bazel build //packages/npm/postgre-sql-runner:postgre-sql-runner --strategy=TsProject=darwin-sandbox
+	@#tmux clear-history
+	@clear
+	@time bazel test --test_output=all //packages/npm/postgre-sql-runner:eslint_test
+	@#tmux clear-history
+	@clear
 	@# Run one tests (The integrataion test from packages/npm/one/BUILD.bazel)
 	time bazel test --test_output=all //packages/npm/one:integration_test
 	@# Run one tests (The integrataion test from packages/npm/one/BUILD.bazel)
-	time bazel test --test_output=all //packages/npm/one:eslint_test
+	@time bazel test --test_output=all //packages/npm/one:eslint_test
+	@clear
+	@time bazel test //...
 	exit 0
 	@# @# Run all tests
 	@# bazel test --test_output=all //...

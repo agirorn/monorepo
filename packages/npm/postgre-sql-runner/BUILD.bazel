@@ -6,33 +6,12 @@ load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_jest//jest:defs.bzl", "jest_test")
 
 SRC_PATTERNS = [
-    # "src/*.ts",
     "src/**/*.ts",
 ]
 
 ts_config(
     name = "tsconfig",
     src = "tsconfig.json",
-    visibility = ["//visibility:public"],
-    deps = [
-      "//:node_modules/@monorepo/tsconfig",
-      "//:node_modules/@tsconfig/node16-strictest"
-    ],
-)
-
-ts_config(
-    name = "tsconfig_test",
-    src = "tsconfig.test.json",
-    visibility = ["//visibility:public"],
-    deps = [
-      "//:node_modules/@monorepo/tsconfig",
-      "//:node_modules/@tsconfig/node16-strictest"
-    ],
-)
-
-ts_config(
-    name = "tsconfig_integration_test",
-    src = "tsconfig.integration-test.json",
     visibility = ["//visibility:public"],
     deps = [
       "//:node_modules/@monorepo/tsconfig",
@@ -51,12 +30,14 @@ ts_project(
         "//:node_modules/@monorepo/two",
         "//:node_modules/@types/pg",
         "//:node_modules/pg",
+        "//:node_modules/execa",
+        "//:node_modules/get-port",
     ],
 )
 
 # make this library available via node_modules
 npm_package(
-    name = "one",
+    name = "postgre-sql-runner",
     srcs = [
         "package.json",
         ":src_ts",
@@ -66,75 +47,8 @@ npm_package(
     visibility = ["//visibility:public"],
 )
 
-ts_project(
-    name = "unit_test_ts",
-    srcs =  glob([
-        "tests/unit/**/*.test.ts",
-    ]),
-    declaration = True,
-    source_map = True,
-    tsconfig = ":tsconfig_test",
-    deps = [
-        ":src_ts",
-        "//:node_modules/@types/jest",
-        "//:node_modules/@types/node",
-    ],
-)
-
-js_library(
-    name = "jest_config",
-    srcs = ["jest.config.js"],
-    visibility = ["//visibility:public"],
-)
-
-jest_test(
-    name = "unit_test",
-    size = "small",
-    timeout="short",
-    config = ":jest_config",
-    data = [
-        ":unit_test_ts",
-        "//:node_modules/ts-jest",
-    ],
-    node_modules = "//:node_modules",
-)
-
-ts_project(
-    name = "integration_test_ts",
-    srcs =  glob([
-        # "tests/integration/**/*.test.ts",
-        "tests/integration/**/*.ts",
-    ]),
-    declaration = True,
-    source_map = True,
-    tsconfig = ":tsconfig_integration_test",
-    deps = [
-        ":src_ts",
-        "//:node_modules/@monorepo/postgre-sql-runner",
-        "//:node_modules/@types/jest",
-        "//:node_modules/@types/node",
-        "//:node_modules/@types/pg",
-        "//:node_modules/pg",
-        "//:node_modules/execa",
-        "//:node_modules/get-port",
-    ],
-)
-
-jest_test(
-    name = "integration_test",
-    size = "large",
-    timeout="short",
-    config = ":jest_config",
-    data = [
-        ":integration_test_ts",
-        "//:node_modules/ts-jest",
-    ],
-    node_modules = "//:node_modules",
-)
-
 ESLINT_PATTERNS = [
   "src/**/*.ts",
-  "tests/**/*.ts",
 ]
 
 eslint_bin.eslint_test(
@@ -151,7 +65,6 @@ eslint_bin.eslint_test(
         ".prettierrc.json",
         "tsconfig.json",
         "//:node_modules/@monorepo/tsconfig",
-        "//:node_modules/@monorepo/postgre-sql-runner",
         "//:node_modules/@tsconfig/node16-strictest",
         "//:node_modules/@monorepo/eslint-config",
         "//:node_modules/@monorepo/prettier-config",
