@@ -13,9 +13,11 @@ export class OneDAO {
   }
 
   async getAll(): Promise<OneRow[]> {
-    return (await this.pool.query(`
-      SELECT *
-        FROM one.one
-    `)).rows as OneRow[];
+    return (
+      await this.pool.query(`
+        SELECT *
+          FROM one.one
+      `)
+    ).rows as OneRow[];
   }
 }

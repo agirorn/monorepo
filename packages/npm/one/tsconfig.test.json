@@ -2,6 +2,7 @@
   "extends": "@monorepo/tsconfig/tsconfig-module.json",
   "compilerOptions": {
     "noUnusedParameters": false,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "sourceMap": true
   }
 }

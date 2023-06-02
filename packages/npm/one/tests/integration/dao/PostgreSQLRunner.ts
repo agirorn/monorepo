@@ -1,20 +1,24 @@
-import { one } from "../../../src/main";
 import { default as execa } from "execa";
 import getPort from "get-port";
-import { Pool, PoolConfig, PoolClient } from "pg";
+import { Pool, PoolClient } from "pg";
 
 export const POSTGRES_PORT = 5432;
 
 export interface FlywayOptions {
   image: string;
-  command: string[];
+  name?: string;
+  database: string;
+  schema?: string;
+  user: string;
+  password: string;
+  connectRetries?: number;
+  locations: string[];
   env: {
     [key: string]: string;
   };
 }
 
 export interface PostgreSQLRunnerOptions {
-  // config: Omit<PoolConfig, "host" | "port">;
   image: string;
   name?: string;
   rmContainer?: boolean;
@@ -25,31 +29,43 @@ export interface PostgreSQLRunnerOptions {
   flyway?: Array<FlywayOptions>;
 }
 
-export const runFlyway = async (
-  port: number,
-  options: FlywayOptions
-): Promise<void> => {
-  console.log("FLYWAY STARTING");
-  console.log(options);
+export const runFlyway = async ({
+  postgreSqlName,
+  options,
+}: {
+  postgreSqlName: string;
+  options: FlywayOptions;
+}): Promise<void> => {
+  const name: string = containerName(options);
+  const envs: string[] = Object.keys(options.env).map((key: string) => {
+    const value = options.env[key];
+    return `--env=${key}=${value}`;
+  });
+
+  const schema: string =
+    options.schema !== undefined ? `-schemas=${options.schema}` : "";
+
+  const connectRetries: string =
+    options.connectRetries !== undefined
+      ? `-connectRetries=${options.connectRetries}`
+      : "-connectRetries=60";
+  const locations = `-locations=${options.locations.join(",")}`;
   const args: string[] = [
     "run",
     "--rm",
-    "--link=db:db",
-    "--name=bazel-databases-one-one",
-    "--env=FLYWAY_PLACEHOLDERS_CUSTOM_COLUMN_NAME=this_column_name_came_from_a_flyway_placeholder",
-    "bazel/databases/one:one",
-    "-url=jdbc:postgresql://db/one",
-    "-schemas=one",
-    "-user=user",
-    "-password=pass",
-    "-connectRetries=60",
-    "-locations=filesystem:/flyway/sql,filesystem:/flyway/custom-sql/dev-sql/,classpath:db/migration",
+    `--link=${postgreSqlName}:${postgreSqlName}`,
+    `--name=${name}`,
+    ...envs,
+    options.image,
+    `-url=jdbc:postgresql://${postgreSqlName}/${options.database}`,
+    schema,
+    `-user=${options.user}`,
+    `-password=${options.password}`,
+    connectRetries,
+    locations,
     "migrate",
   ].filter((v) => v.trim() !== "");
-  const { stdout, stderr } = await execa("docker", args);
-  console.log(stdout, stderr);
-
-  console.log("FLYWAY DONE RUNNING");
+  await execa("docker", args);
 };
 
 export class PostgreSQLRunner {
@@ -61,19 +77,14 @@ export class PostgreSQLRunner {
   }
 
   async start(): Promise<void> {
-    console.log(this.options);
     const { image, rmContainer } = this.options;
-    const name: string =
-      this.options.name !== undefined
-        ? this.options.name
-        : image.replaceAll("/", "-").replaceAll(":", "-");
+    const name: string = containerName(this.options);
     const port = await getPort();
     this.port = port;
     const shouldRemoveContainer =
       rmContainer === undefined ? true : rmContainer;
     const rmRemoveContainerArg = shouldRemoveContainer ? "--rm" : "";
 
-    console.log("lol: ");
     const args: string[] = [
       "run",
       rmRemoveContainerArg, // "--rm",
@@ -87,7 +98,6 @@ export class PostgreSQLRunner {
     const { stdout } = await execa("docker", args);
 
     this.postgresId = stdout.trim();
-    console.log(`postgresId: ${this.postgresId}`);
     const pool = new Pool({
       port,
       host: "localhost",
@@ -96,39 +106,32 @@ export class PostgreSQLRunner {
     });
     await sleepUntil(500, async () => {
       try {
-        console.log("connecting...");
         const client: PoolClient = await pool.connect();
         client.release();
         return true;
       } catch (e) {
-        // console.log('ERROR:', e);
         return false;
       }
     });
 
-    console.log("connected");
     await pool.end();
 
-    console.log("this.options.flyway:", this.options.flyway);
     if (this.options.flyway) {
       const flywayOptions = this.options.flyway;
       for (const options of flywayOptions) {
-        console.log("fl opt:", options);
-        await runFlyway(port, options);
+        await runFlyway({
+          postgreSqlName: name,
+          options,
+        });
       }
     }
-
-    console.log("STARTED");
   }
 
-  async stop() {
-    console.log("Stopping");
-    console.log(this.options);
+  async stop(): Promise<void> {
     const { postgresId } = this;
 
     if (postgresId) {
-      const { stdout } = await execa("docker", ["stop", postgresId]);
-      console.log(stdout.trim());
+      await execa("docker", ["stop", postgresId]);
     }
   }
 
@@ -140,13 +143,28 @@ export class PostgreSQLRunner {
   }
 }
 
-const delay = async (ms: number) =>
+const containerName = ({
+  image,
+  name,
+}: {
+  image: string;
+  name?: string;
+}): string => {
+  return name !== undefined
+    ? name
+    : image.replaceAll("/", "-").replaceAll(":", "-");
+};
+
+const delay = async (ms: number): Promise<void> =>
   new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
 
 type SleepUntilCallback = () => Promise<boolean>;
-const sleepUntil = async (delayMs: number, callback: SleepUntilCallback) => {
+const sleepUntil = async (
+  delayMs: number,
+  callback: SleepUntilCallback
+): Promise<void> => {
   if (!(await callback())) {
     return;
   }

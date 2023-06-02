@@ -1,8 +1,5 @@
-import { one } from "../../../src/main";
 import { OneDAO } from "../../../src/dao/OneDAO";
-import { default as execa } from "execa";
-import getPort from "get-port";
-import { Pool, PoolConfig, PoolClient } from "pg";
+import { Pool } from "pg";
 import { PostgreSQLRunner } from "./PostgreSQLRunner";
 
 let postgres: PostgreSQLRunner;
@@ -11,7 +8,7 @@ beforeAll(async () => {
   postgres = new PostgreSQLRunner({
     rmContainer: true,
     image: "bazel/postgres:postgres_image",
-    name: "db",
+    // name: "db", // we can give the postgres container a name for debugging
     env: {
       POSTGRES_USER: "user",
       POSTGRES_PASSWORD: "pass",
@@ -19,14 +16,14 @@ beforeAll(async () => {
     flyway: [
       {
         image: "bazel/databases/one:one",
-        command: [
-          "-url=jdbc:postgresql://db/one",
-          "-schemas=one",
-          "-user=user",
-          "-password=pass",
-          "-connectRetries=60",
-          "-locations=filesystem:/flyway/sql,filesystem:/flyway/custom-sql/${CUSTOM_SQL:-dev}-sql/,classpath:db/migration",
-          "migrate",
+        user: "user",
+        password: "pass",
+        database: "one",
+        schema: "one",
+        locations: [
+          "filesystem:/flyway/sql",
+          "filesystem:/flyway/custom-sql/dev-sql/",
+          "classpath:db/migration",
         ],
         env: {
           FLYWAY_PLACEHOLDERS_CUSTOM_COLUMN_NAME:
@@ -45,9 +42,6 @@ beforeAll(async () => {
     password: "pass",
     database: "one",
   });
-
-  const client: PoolClient = await pool.connect();
-  client.release();
 }, 20000);
 
 afterAll(async () => {

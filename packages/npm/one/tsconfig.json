@@ -2,6 +2,7 @@
   "extends": "@monorepo/tsconfig/tsconfig-module.json",
   "compilerOptions": {
     "esModuleInterop": true,
-    "importsNotUsedAsValues": "remove"
+    "importsNotUsedAsValues": "remove",
+    "sourceMap": true
   }
 }

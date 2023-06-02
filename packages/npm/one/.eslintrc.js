@@ -3,4 +3,7 @@ module.exports = {
   parserOptions: {
     tsconfigRootDir: __dirname,
   },
+  rules: {
+    "node/no-extraneous-import": "off",
+  },
 };

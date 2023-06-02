@@ -45,6 +45,7 @@ ts_project(
     srcs = glob(SRC_PATTERNS),
     tsconfig = ":tsconfig",
     declaration = True,
+    source_map = True,
     deps = [
         "//:node_modules/@types/node",
         "//:node_modules/@monorepo/two",
@@ -71,6 +72,7 @@ ts_project(
         "tests/unit/**/*.test.ts",
     ]),
     declaration = True,
+    source_map = True,
     tsconfig = ":tsconfig_test",
     deps = [
         ":src_ts",
@@ -104,6 +106,7 @@ ts_project(
         "tests/integration/**/*.ts",
     ]),
     declaration = True,
+    source_map = True,
     tsconfig = ":tsconfig_integration_test",
     deps = [
         ":src_ts",
@@ -128,6 +131,11 @@ jest_test(
     node_modules = "//:node_modules",
 )
 
+ESLINT_PATTERNS = [
+  "src/**/*.ts",
+  "tests/**/*.ts",
+]
+
 eslint_bin.eslint_test(
     name = "eslint_test",
     size = "small",
@@ -135,7 +143,7 @@ eslint_bin.eslint_test(
     args = ["{}/{}".format(
         package_name(),
         p,
-    ) for p in SRC_PATTERNS],
+    ) for p in ESLINT_PATTERNS],
     data = [
         "package.json",
         ".eslintrc.js",
@@ -151,5 +159,9 @@ eslint_bin.eslint_test(
         "//:node_modules/@typescript-eslint/eslint-plugin",
         "//:node_modules/@typescript-eslint/parser",
         "//:node_modules/prettier",
-    ] + glob(SRC_PATTERNS),
+        "//:node_modules/@types/pg",
+        "//:node_modules/pg",
+        "//:node_modules/execa",
+        "//:node_modules/get-port",
+    ] + glob(ESLINT_PATTERNS),
 )

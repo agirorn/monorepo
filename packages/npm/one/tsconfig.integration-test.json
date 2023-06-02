@@ -5,6 +5,7 @@
     "noUnusedParameters": false,
     "noUnusedLocals": false,
     // Allow unused imports for tests to make life easier
-    "importsNotUsedAsValues": "remove"
+    "importsNotUsedAsValues": "remove",
+    "sourceMap": true
   }
 }
