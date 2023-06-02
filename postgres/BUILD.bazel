@@ -1,10 +1,23 @@
 package(default_visibility = ["//visibility:public"])
 
 load("@io_bazel_rules_docker//container:image.bzl", "container_image")
+load("@io_bazel_rules_docker//container:layer.bzl", "container_layer")
+
+container_layer(
+    name = "docker_entrypoint_initdb_layer",
+    files = glob(["postgres_init/*.sql"]),
+    directory = "/docker-entrypoint-initdb.d",
+    # data_path is needed to preserve the directory structure (sql, custom-sql)
+    # data_path = ".",
+)
+
 
 # To make this docker images available run
 # bazel run //postgres:postgres_image -- --norum
 container_image(
     name = "postgres_image",
     base = "@postgres//image",
+    layers = [
+        ":docker_entrypoint_initdb_layer",
+    ],
 )

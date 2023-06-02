@@ -6,7 +6,8 @@ load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_jest//jest:defs.bzl", "jest_test")
 
 SRC_PATTERNS = [
-    "src/*.ts",
+    # "src/*.ts",
+    "src/**/*.ts",
 ]
 
 ts_config(
@@ -47,6 +48,8 @@ ts_project(
     deps = [
         "//:node_modules/@types/node",
         "//:node_modules/@monorepo/two",
+        "//:node_modules/@types/pg",
+        "//:node_modules/pg",
     ],
 )
 
@@ -97,7 +100,8 @@ jest_test(
 ts_project(
     name = "integration_test_ts",
     srcs =  glob([
-        "tests/integration/**/*.test.ts",
+        # "tests/integration/**/*.test.ts",
+        "tests/integration/**/*.ts",
     ]),
     declaration = True,
     tsconfig = ":tsconfig_integration_test",
@@ -108,6 +112,7 @@ ts_project(
         "//:node_modules/@types/pg",
         "//:node_modules/pg",
         "//:node_modules/execa",
+        "//:node_modules/get-port",
     ],
 )
 

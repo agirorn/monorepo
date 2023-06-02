@@ -1,3 +1,7 @@
 {
-  "extends": "@monorepo/tsconfig/tsconfig-module.json"
+  "extends": "@monorepo/tsconfig/tsconfig-module.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "importsNotUsedAsValues": "remove"
+  }
 }

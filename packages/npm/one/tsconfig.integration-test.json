@@ -1,7 +1,10 @@
 {
   "extends": "@monorepo/tsconfig/tsconfig-module.json",
   "compilerOptions": {
+    // Allow unused variable for tests to make life easier
     "noUnusedParameters": false,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    // Allow unused imports for tests to make life easier
+    "importsNotUsedAsValues": "remove"
   }
 }
