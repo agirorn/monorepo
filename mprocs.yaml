@@ -2,16 +2,16 @@ proc_list_width: 34
 procs:
   "- DEV -------------------------":
     autostart: false
-    shell: "time echo -"
-  tests:
+    shell: "time :"
+  DEV:
     autostart: false
     shell: "make dev"
-  integration tests:
+  DEV integration tests:
     autostart: false
     shell: "make integration-dev"
   "- DOCKER -------------------------":
     autostart: false
-    shell: "time echo -"
+    shell: "time :"
   reset hard:
     autostart: false
     shell: "time docker system prune --volumes --force --all"
@@ -48,7 +48,7 @@ procs:
 
   "- app-1 -----------------------------":
     autostart: false
-    shell: "time echo -"
+    shell: "time :"
   app-1 RUN:
     autostart: false
     shell: "bazel run app-1"
@@ -67,7 +67,7 @@ procs:
 
   "- app-2 -----------------------------":
     autostart: false
-    shell: "time echo -"
+    shell: "time :"
   app-2 RUN:
     autostart: false
     shell: "bazel run app-2"
@@ -86,7 +86,7 @@ procs:
 
   "- other -----------------------------":
     autostart: false
-    shell: "time echo -"
+    shell: "time :"
   package-three WATCH:
     autostart: false
     shell: "yardman 'packages/npm/three/**/*' pnpm-workspace.yaml package.json 'clear && bazel build packages/npm/three'"
