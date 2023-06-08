@@ -1,11 +1,11 @@
 import unittest
 
-import main
+import app_3
 
 
 class ExampleTest(unittest.TestCase):
     def test_main(self):
-        self.assertIn("set_stream_logger", main.the_dir())
+        self.assertIn("STRING", app_3.get_string())
 
 
 if __name__ == "__main__":
