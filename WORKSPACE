@@ -110,6 +110,40 @@ git_repository(
     remote = "https://github.com/airyhq/bazel-tools.git"
 )
 
+http_archive(
+    name = "rules_python",
+    sha256 = "863ba0fa944319f7e3d695711427d9ad80ba92c6edd0b7c7443b84e904689539",
+    strip_prefix = "rules_python-0.22.0",
+    url = "https://github.com/bazelbuild/rules_python/releases/download/0.22.0/rules_python-0.22.0.tar.gz",
+)
+
+load("@rules_python//python:repositories.bzl", "py_repositories")
+
+py_repositories()
+
+
+load("@rules_python//python:repositories.bzl", "python_register_toolchains")
+
+python_register_toolchains(
+    name = "python_version",
+    # Available versions are listed in @rules_python//python:versions.bzl.
+    # We recommend using the same version your team is already standardized on.
+    python_version = "3.10.8",
+)
+
+load("@python_version//:defs.bzl", "interpreter")
+load("@rules_python//python:pip.bzl", "pip_parse")
+
+pip_parse(
+    name = "pypi",
+    python_interpreter_target = interpreter,
+    requirements_lock = "//:requirements.txt",
+)
+
+load("@pypi//:requirements.bzl", "install_deps")
+
+install_deps()
+
 # TODO: remove when rules_?  upgrades to modern version supporting
 http_archive(
     name = "bazel_gazelle",

@@ -161,6 +161,41 @@ docker image they start is built in the [BUILD][dataform.build] file.
 
 Then when the tests are finished they shut down the server.
 
+# Python specifics
+
+## Pinned dependencies
+
+Building python apps in Bazel requires us to have pined version of dependencies
+and Bazel is doing that using the [pip-compile] command from [pip-tools]. This
+requires the developer to have [pip-tools] installed when adding or updating
+dependencies and or there version.
+Instead of editing the requirements.txt directly, instead edit the
+requirements.in and then run [pip-compile] that generates the requirements.txt
+with pinned dependencies.
+
+- [Why requirements.txt isn't enough]
+- [pip-tools]
+
+## virtualenv
+
+This repository has `.python-version` file in the project root that configures
+what [virtualenv] [pyenv] uses. This is a nice way to install the python
+dependencies into an isolated environment so that are available to the IDEs like
+VScode and vim to provide code completion.
+
+To create the virtual even for this repository run this command:
+
+```bash
+pyenv virtualenv  3.10.8 monorepo
+```
+
+Then you can install all the dependencies to the virtual even by running this
+command:
+
+```bash
+pip install -r requirements.txt
+```
+
 # Bazel Docs
 
 - [rules_docker](https://github.com/bazelbuild/rules_docker/blob/master/docs/container.md)
@@ -174,3 +209,8 @@ Then when the tests are finished they shut down the server.
 [Testcontainers]: https://www.testcontainers.org/
 [Testcontainers.Quickstart]: https://node.testcontainers.org/quickstart/
 
+[Why requirements.txt isn't enough]: https://modelpredict.com/wht-requirements-txt-is-not-enough
+[pip-tools]: https://github.com/jazzband/pip-tools#readme
+[pip-compile]: https://github.com/jazzband/pip-tools#example-usage-for-pip-compile
+[pyenv]: https://github.com/pyenv/pyenv
+[virtualenv]: https://github.com/pyenv/pyenv-virtualenv

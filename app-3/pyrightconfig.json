@@ -1,0 +1,17 @@
+{
+  "include": [
+    "src",
+    "fuzzywuzzy"
+  ],
+
+  "defineConstant": {
+    "DEBUG": true
+  },
+  "root": "/Users/aegiro/code-mine/monorepo/app-3",
+  "venv": "monorepo",
+
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false,
+
+  "pythonVersion": "3.10.8",
+}

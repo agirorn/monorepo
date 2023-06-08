@@ -1,0 +1,5 @@
+requests~=2.25.1
+s3cmd~=2.1.0
+yamllint~=1.26.3
+fuzzywuzzy==0.18.0
+fuzzywuzzy-stubs==0.0.1

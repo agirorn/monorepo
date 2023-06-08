@@ -1,0 +1,18 @@
+load("@rules_python//python:defs.bzl", "py_binary", "py_test")
+
+
+py_binary(
+    name = "app-3",
+    srcs = ["app-3.py"],
+    deps = [
+        "@pypi_fuzzywuzzy//:pkg",
+    ],
+)
+
+
+py_test(
+    name = "test",
+    srcs = ["test.py"],
+    deps = [":main"],
+)
+
