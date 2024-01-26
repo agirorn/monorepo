@@ -204,6 +204,29 @@ container_pull(
     repository = "debian",
 )
 
+
+
+# ARM64
+container_pull(
+    name = "bash_arm64",
+    architecture = "arm64",
+    tag = "5.2.26",
+    # digest = "sha256:bd276cb1059f6502e342d3052a4c2767f2b3a0196508f5c2c34ce6da4a15b104",
+    registry = "docker.io",
+    repository = "bash",
+)
+
+# AMD64 x64
+container_pull(
+    name = "bash_amd64",
+    architecture = "amd64",
+    tag = "5.2.26",
+    # digest = "sha256:9a67b70d0ba1d7c7690f917eedd8d24974dd8fd493205368b1e555a90c954208",
+    registry = "docker.io",
+    repository = "bash",
+)
+
+
 # # ARM64
 # container_pull(
 #   name = "flyway_arm64",

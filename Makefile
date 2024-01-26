@@ -45,6 +45,13 @@ dev-exec:
 	@# @# bazel run app-2
 	@# @# bazel run app-1
 
+load-into-docker:
+	bazel run app-1:image -- --norun
+	bazel run app-2:image -- --norun
+	bazel run //postgres:postgres_image -- --norun
+	bazel run //databases/one:one -- --norun
+
+
 integration-dev:
 	yardman \
 		Makefile \

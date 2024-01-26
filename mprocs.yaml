@@ -74,6 +74,9 @@ procs:
   app-2 BUILD:
     autostart: false
     shell: "bazel build app-2 --verbose_failures --sandbox_debug"
+  app-2 DOCKER LOAD:
+    autostart: false
+    shell: "bazel run app-2:image -- --norun"
   app-2 WATCH:
     autostart: false
     shell: "yardman 'packages/**/*' 'app-2/**/*' pnpm-workspace.yaml package.json 'clear && bazel run app-2'"
